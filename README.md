@@ -15,10 +15,15 @@ The goal of this repository is to showcase practical data analysis skills using 
 Project	Title	Focus Area
 
 1	Sales Performance Analysis	Product and sales performance tracking
+
 2	Student Performance Analysis	Academic score correlation and summary stats
+
 3	Weather Trend Analysis	Temperature variations and climate correlation
+
 4	Movie Rating Insights	Rating trends and release year correlation
+
 5	Expense Tracking Analysis	Category spending and trend detection
+
 6	Global Sales & Profit Report	Regional and product-level profitability
 
 
