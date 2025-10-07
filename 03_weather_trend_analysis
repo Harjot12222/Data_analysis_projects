@@ -1,0 +1,56 @@
+# ----------------------------
+# 🌦️ Weather Trend Analysis
+# ----------------------------
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Load dataset
+df = pd.read_csv(path)
+
+# ---- Data Preparation ----
+df.drop(0, inplace=True)  # drop header duplication if present
+df.reset_index(drop=True, inplace=True)
+
+# Display available columns
+print("Columns in dataset:\n", df.columns, "\n")
+
+# Convert 'date' to datetime if possible
+try:
+    df["date"] = pd.to_datetime(df["date"], errors="coerce")
+except Exception as e:
+    print(f"⚠️ Date conversion failed: {e}")
+
+# ---- Descriptive Statistics ----
+print(f"Average Temperature: {df['mean_temp'].mean():.2f}°C")
+
+# Identify hottest and coldest recorded periods
+max_temps = df[["date", "max_temp"]].sort_values(by="max_temp", ascending=False).head(15)
+min_temps = df[["date", "min_temp"]].sort_values(by="min_temp", ascending=True).head(15)
+
+print("\n🔥 Hottest Periods:")
+print(max_temps)
+
+print("\n❄️ Coldest Periods:")
+print(min_temps)
+
+# ---- Extremes and Correlation ----
+print("\nMaximum Recorded Temperature:", df["max_temp"].max())
+print("Minimum Recorded Temperature:", df["min_temp"].min())
+
+if "precipitation" in df.columns and "cloud_cover" in df.columns:
+    corr = df["precipitation"].corr(df["cloud_cover"])
+    print(f"Correlation between Precipitation and Cloud Cover: {corr:.3f}")
+else:
+    print("⚠️ 'precipitation' or 'cloud_cover' columns missing, correlation not computed.")
+
+# ---- Visualization ----
+plt.figure(figsize=(7, 5))
+plt.scatter(df["precipitation"], df["cloud_cover"], alpha=0.7, edgecolors='k')
+plt.title("Precipitation vs Cloud Cover")
+plt.xlabel("Precipitation (mm)")
+plt.ylabel("Cloud Cover (%)")
+plt.grid(True, linestyle="--", alpha=0.6)
+plt.tight_layout()
+plt.show()
