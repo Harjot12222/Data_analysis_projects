@@ -24,7 +24,7 @@ profit = df['Profit'].astype(str).str.strip()
 profit = profit.replace({'': np.nan, '-': np.nan})
 profit = profit.str.replace(r'[\$,]', '', regex=True)
 mask_parens = profit.str.startswith('(') & profit.str.endswith(')')
-profit_no_parens = profit.str.replace(r'[]', '', regex=True)
+profit_no_parens = profit.str.replace(r'[\(\)]', '', regex=True)
 profit_float = pd.to_numeric(profit_no_parens, errors='coerce')
 profit_float[mask_parens] *= -1
 df['Profit'] = profit_float
@@ -62,4 +62,27 @@ plt.figure(figsize=(8, 5))
 df.groupby("Year")["Sales"].sum().plot(kind="line", marker="o", color="teal")
 plt.title("Annual Sales Performance")
 plt.xlabel("Year")
-plt.ylabel("Total Sales
+plt.ylabel("Total Sales ($)")
+plt.grid(True, linestyle="--", alpha=0.6)
+plt.tight_layout()
+plt.show()
+
+# 2. Product Profit Bar Chart
+plt.figure(figsize=(8, 5))
+plt.bar(best_products["Product"][:10], best_products["Profit"][:10], color="royalblue")
+plt.title("Top 10 Products by Profit")
+plt.xlabel("Product")
+plt.ylabel("Profit ($)")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# 3. Sales vs Profit Scatter Plot
+plt.figure(figsize=(7, 5))
+plt.scatter(df["Sales"], df["Profit"], alpha=0.6, color="orange", edgecolor="black")
+plt.title("Sales vs Profit Correlation")
+plt.xlabel("Sales ($)")
+plt.ylabel("Profit ($)")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.tight_layout()
+plt.show()
